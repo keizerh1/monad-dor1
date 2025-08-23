@@ -4,7 +4,7 @@ const nextConfig = {
     appDir: true,
   },
   images: {
-    domains: ['placeholder.pics', 'via.placeholder.com', 'picsum.photos'],
+    domains: ['placeholder.pics', 'via.placeholder.com', 'picsum.photos', 'cdn.discordapp.com'],
   },
 }
 
