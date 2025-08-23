@@ -51,7 +51,7 @@ export default function ResultsPage() {
     <div className="max-w-6xl mx-auto">
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-6xl font-bold mb-4 text-gradient">
-          Monad d'Or Results 🏆
+          Monad d&apos;Or Results 🏆
         </h1>
         <p className="text-xl text-gray-300 mb-4">
           See which projects are leading the race!
