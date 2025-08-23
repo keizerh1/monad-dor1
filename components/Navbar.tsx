@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useSession, signIn, signOut } from 'next-auth/react'
 import { useState } from 'react'
 
@@ -43,11 +44,13 @@ export function Navbar() {
                 <div className="flex items-center space-x-4">
                   <div className="flex items-center space-x-2">
                     {session.user?.image && (
-                      <img
-                        src={session.user.image}
-                        alt="Avatar"
-                        className="w-8 h-8 rounded-full border-2 border-monad-purple"
-                      />
+                    <Image
+                      src={session.user.image}
+                      alt="Avatar"
+                      width={32}
+                      height={32}
+                      className="w-8 h-8 rounded-full border-2 border-monad-purple"
+                    />
                     )}
                     <span className="text-sm text-gray-300">
                       {session.user?.name}
