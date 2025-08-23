@@ -16,7 +16,7 @@ export function Navbar() {
           <Link href="/" className="flex items-center space-x-2 group">
             <span className="text-2xl">🏆</span>
             <span className="text-xl font-bold text-gradient group-hover:scale-105 transition-transform">
-              Monad d'Or
+              Monad d&apos;Or
             </span>
           </Link>
 
