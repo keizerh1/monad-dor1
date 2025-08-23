@@ -13,7 +13,7 @@ export function LoginPrompt() {
         </h2>
         
         <p className="text-gray-300 text-lg mb-8">
-          Connect your Discord account to participate in the Monad d'Or voting and help celebrate the best NFT projects!
+          Connect your Discord account to participate in the Monad d&apos;Or voting and help celebrate the best NFT projects!
         </p>
 
         <button
