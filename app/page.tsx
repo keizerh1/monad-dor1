@@ -5,7 +5,7 @@ export default function Home() {
     <div className="flex flex-col items-center justify-center min-h-[80vh] text-center">
       <div className="mb-12 animate-float">
         <h1 className="text-6xl md:text-8xl font-bold mb-6 text-gradient">
-          Monad d'Or 🏆
+          Monad d&apos;Or 🏆
         </h1>
         <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
           Vote for your favorite NFT projects and celebrate the Monad ecosystem.
