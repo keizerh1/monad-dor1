@@ -41,7 +41,7 @@ const mockProjects = [
   {
     id: '6',
     name: 'Golden Griffins',
-    description: 'Legendary creatures soaring through Monad&apos;s golden age',
+    description: 'Legendary creatures soaring through Monad\'s golden age',
     image: 'https://picsum.photos/400/400?random=6'
   }
 ]
