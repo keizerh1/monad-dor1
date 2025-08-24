@@ -7,7 +7,7 @@ import { Navbar } from '@/components/Navbar'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Monad d&apos;Or 🏆',
+  title: 'Monad d\'Or 🏆',
   description: 'Vote for your favorite NFT projects and celebrate the Monad ecosystem.',
 }
 
