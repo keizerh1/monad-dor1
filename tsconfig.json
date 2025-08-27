@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
+    "target": "es2017", // Add this line
     "downlevelIteration": true,
-    "lib": ["dom", "dom.iterable", "es6"],
+    "lib": ["dom", "dom.iterable", "es2017"], // Update this to match target
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
