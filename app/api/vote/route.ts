@@ -14,7 +14,7 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession()
-    
+        
     if (!session?.user?.id) {
       return NextResponse.json(
         { error: 'Authentication required' },
@@ -31,11 +31,10 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check if user has already voted for this project
+    // Check if user has already voted for ANY project (not just this one)
     const { data: existingVote, error: checkError } = await supabase
       .from('votes')
-      .select('id')
-      .eq('project_id', projectId)
+      .select('id, project_id')
       .eq('discord_id', session.user.id)
       .single()
 
@@ -49,7 +48,7 @@ export async function POST(request: NextRequest) {
 
     if (existingVote) {
       return NextResponse.json(
-        { error: 'You have already voted for this project' },
+        { error: 'You have already voted. Each Discord user can only vote once.' },
         { status: 409 }
       )
     }
@@ -73,11 +72,10 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    return NextResponse.json({ 
-      success: true, 
-      vote 
+    return NextResponse.json({
+      success: true,
+      vote
     })
-
   } catch (error) {
     console.error('Vote API error:', error)
     return NextResponse.json(

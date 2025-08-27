@@ -53,32 +53,39 @@ const mockProjects: Project[] = [
 
 export default function VotePage() {
   const { data: session, status } = useSession()
-  const [votedProjects, setVotedProjects] = useState<Set<string>>(new Set())
+  const [hasVoted, setHasVoted] = useState(false)
+  const [votedProjectId, setVotedProjectId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (session?.user) {
-      fetchUserVotes()
+      fetchUserVoteStatus()
     } else {
       setLoading(false)
     }
   }, [session])
 
-  const fetchUserVotes = async () => {
+  const fetchUserVoteStatus = async () => {
     try {
-      const response = await fetch('/api/votes/user')
+      const response = await fetch('/api/vote/status')
       if (response.ok) {
         const data = await response.json()
-        setVotedProjects(new Set(data.votedProjects))
+        setHasVoted(data.hasVoted)
+        setVotedProjectId(data.votedProjectId)
       }
     } catch (error) {
-      console.error('Error fetching user votes:', error)
+      console.error('Error fetching vote status:', error)
     } finally {
       setLoading(false)
     }
   }
 
   const handleVote = async (projectId: string) => {
+    if (hasVoted) {
+      alert('You have already voted!')
+      return
+    }
+
     try {
       const response = await fetch('/api/vote', {
         method: 'POST',
@@ -89,14 +96,12 @@ export default function VotePage() {
       })
 
       if (response.ok) {
-        setVotedProjects(prev => {
-  const newSet = new Set(prev);
-  newSet.add(projectId);
-  return newSet;
-})
+        setHasVoted(true)
+        setVotedProjectId(projectId)
+        alert('Vote recorded successfully!')
       } else {
         const error = await response.json()
-        alert(error.message || 'Failed to vote')
+        alert(error.error || 'Failed to vote')
       }
     } catch (error) {
       console.error('Error voting:', error)
@@ -120,16 +125,25 @@ export default function VotePage() {
     <div className="max-w-7xl mx-auto">
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-6xl font-bold mb-4 text-gradient">
-          Vote for Your Favorites
+          Vote for Your Favorite
         </h1>
         <p className="text-xl text-gray-300 mb-8">
-          Choose the best NFT projects in the Monad ecosystem
+          Choose the best NFT project in the Monad ecosystem
         </p>
         <div className="bg-gray-900/50 backdrop-blur-sm p-4 rounded-xl border border-purple-500/20 inline-block">
-          <p className="text-monad-gold">
-            Welcome, <span className="font-semibold">{session.user?.name}</span>! 
-            You can vote once per project.
-          </p>
+          {hasVoted ? (
+            <p className="text-monad-gold">
+              ✅ Thank you <span className="font-semibold">{session.user?.name}</span>! 
+              You have already voted for <span className="font-semibold">
+                {mockProjects.find(p => p.id === votedProjectId)?.name}
+              </span>.
+            </p>
+          ) : (
+            <p className="text-monad-gold">
+              Welcome, <span className="font-semibold">{session.user?.name}</span>! 
+              You can vote for <span className="font-semibold text-white">one project only</span>.
+            </p>
+          )}
         </div>
       </div>
 
@@ -138,8 +152,9 @@ export default function VotePage() {
           <ProjectCard
             key={project.id}
             project={project}
-            hasVoted={votedProjects.has(project.id)}
-            onVote={handleVote}
+            hasVoted={project.id === votedProjectId}
+            onVote={hasVoted ? undefined : handleVote}
+            disabled={hasVoted && project.id !== votedProjectId}
           />
         ))}
       </div>

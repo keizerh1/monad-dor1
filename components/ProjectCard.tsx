@@ -13,14 +13,15 @@ interface Project {
 interface ProjectCardProps {
   project: Project
   hasVoted: boolean
-  onVote: (projectId: string) => Promise<void>
+  onVote?: (projectId: string) => Promise<void>
+  disabled?: boolean
 }
 
-export function ProjectCard({ project, hasVoted, onVote }: ProjectCardProps) {
+export function ProjectCard({ project, hasVoted, onVote, disabled = false }: ProjectCardProps) {
   const [isVoting, setIsVoting] = useState(false)
 
   const handleVote = async () => {
-    if (hasVoted || isVoting) return
+    if (hasVoted || isVoting || disabled || !onVote) return
     
     setIsVoting(true)
     try {
@@ -30,42 +31,70 @@ export function ProjectCard({ project, hasVoted, onVote }: ProjectCardProps) {
     }
   }
 
+  const isButtonDisabled = hasVoted || isVoting || disabled || !onVote
+
   return (
-    <div className="group bg-gray-900/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 hover:transform hover:scale-105">
+    <div className={`group bg-gray-900/50 backdrop-blur-sm rounded-2xl overflow-hidden border transition-all duration-300 ${
+      hasVoted 
+        ? 'border-monad-gold shadow-lg shadow-monad-gold/20' 
+        : disabled 
+        ? 'border-gray-600/20 opacity-75' 
+        : 'border-purple-500/20 hover:border-purple-500/40 hover:transform hover:scale-105'
+    }`}>
       <div className="relative overflow-hidden">
         <Image
           src={project.image}
           alt={project.name}
           width={400}
           height={400}
-          className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
+          className={`w-full h-64 object-cover transition-transform duration-300 ${
+            !disabled ? 'group-hover:scale-110' : ''
+          }`}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div className={`absolute inset-0 bg-gradient-to-t from-black/60 to-transparent transition-opacity duration-300 ${
+          !disabled ? 'opacity-0 group-hover:opacity-100' : 'opacity-30'
+        }`}></div>
         
         {hasVoted && (
           <div className="absolute top-4 right-4 bg-monad-gold text-black px-3 py-1 rounded-full text-sm font-semibold flex items-center space-x-1">
             <span>✓</span>
-            <span>Voted</span>
+            <span>Your Vote</span>
+          </div>
+        )}
+
+        {disabled && !hasVoted && (
+          <div className="absolute top-4 right-4 bg-gray-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+            Voting Closed
           </div>
         )}
       </div>
 
       <div className="p-6">
-        <h3 className="text-xl font-bold text-white mb-3 group-hover:text-monad-purple transition-colors">
+        <h3 className={`text-xl font-bold mb-3 transition-colors ${
+          hasVoted 
+            ? 'text-monad-gold' 
+            : disabled 
+            ? 'text-gray-400' 
+            : 'text-white group-hover:text-monad-purple'
+        }`}>
           {project.name}
         </h3>
-        <p className="text-gray-400 text-sm mb-6 line-clamp-3">
+        <p className={`text-sm mb-6 line-clamp-3 ${
+          disabled ? 'text-gray-500' : 'text-gray-400'
+        }`}>
           {project.description}
         </p>
 
         <button
           onClick={handleVote}
-          disabled={hasVoted || isVoting}
+          disabled={isButtonDisabled}
           className={`w-full py-3 px-6 rounded-xl font-semibold transition-all duration-300 ${
             hasVoted
-              ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
+              ? 'bg-monad-gold text-black cursor-default'
               : isVoting
               ? 'bg-monad-purple/50 text-white cursor-wait'
+              : disabled
+              ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
               : 'bg-gradient-to-r from-monad-purple to-monad-purple-dark text-white hover:shadow-lg hover:shadow-purple-500/25 hover:scale-105 active:scale-95'
           }`}
         >
@@ -76,7 +105,12 @@ export function ProjectCard({ project, hasVoted, onVote }: ProjectCardProps) {
             </div>
           ) : hasVoted ? (
             <div className="flex items-center justify-center space-x-2">
-              <span>✓</span>
+              <span>🏆</span>
+              <span>Your Choice</span>
+            </div>
+          ) : disabled ? (
+            <div className="flex items-center justify-center space-x-2">
+              <span>🚫</span>
               <span>Already Voted</span>
             </div>
           ) : (
