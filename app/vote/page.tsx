@@ -109,16 +109,17 @@ export default function VotePage() {
     }
   }
 
-  if (status === 'loading' || loading) {
+  // PARTIE CORRIGÉE ICI
+  if (status === 'unauthenticated') {
+    return <LoginPrompt />
+  }
+
+  if (status === 'loading' || loading || !session) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-monad-purple"></div>
       </div>
     )
-  }
-
-  if (!session) {
-    return <LoginPrompt />
   }
 
   return (
