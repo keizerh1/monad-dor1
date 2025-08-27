@@ -89,7 +89,11 @@ export default function VotePage() {
       })
 
       if (response.ok) {
-        setVotedProjects(prev => new Set([...prev, projectId]))
+        setVotedProjects(prev => {
+  const newSet = new Set(prev);
+  newSet.add(projectId);
+  return newSet;
+})
       } else {
         const error = await response.json()
         alert(error.message || 'Failed to vote')
