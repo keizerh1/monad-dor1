@@ -1,33 +1,33 @@
-import NextAuth, { AuthOptions } from 'next-auth'
-import DiscordProvider from 'next-auth/providers/discord'
+import NextAuth from 'next-auth'
+import type { NextAuthOptions } from 'next-auth'
+import GoogleProvider from 'next-auth/providers/google'
+import { SupabaseAdapter } from '@auth/supabase-adapter'
+import { createClient } from '@supabase/supabase-js'
 
-export const authOptions: AuthOptions = {
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
+
+const authOptions: NextAuthOptions = {
+  adapter: SupabaseAdapter(supabase),
   providers: [
-    DiscordProvider({
-      clientId: process.env.DISCORD_CLIENT_ID!,
-      clientSecret: process.env.DISCORD_CLIENT_SECRET!,
-    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    })
   ],
   callbacks: {
-    async session({ session, token }) {
-      if (session.user && token.sub) {
-        // Add the Discord ID to the session
-        session.user.id = token.sub
-      }
+    session: async ({ session, token }) => {
       return session
     },
-    async jwt({ token, account, profile }) {
-      if (account && profile) {
-        token.sub = profile.sub || account.providerAccountId
-      }
-      return token
-    },
   },
-  pages: {
-    signIn: '/auth/signin',
-    error: '/auth/error',
+  session: {
+    strategy: 'jwt',
   },
 }
 
 const handler = NextAuth(authOptions)
+
+// IMPORTANT: Exportez uniquement GET et POST, PAS authOptions
 export { handler as GET, handler as POST }
