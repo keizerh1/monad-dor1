@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
+import { authOptions } from '../auth/[...nextauth]/route'
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.SUPABASE_URL
@@ -13,7 +14,7 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession()
+    const session = await getServerSession(authOptions)
         
     if (!session?.user?.id) {
       return NextResponse.json(
