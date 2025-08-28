@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '../auth/[...nextauth]/route'
+// 1. Importer la fonction 'auth' depuis votre fichier auth.ts
+import { auth } from '@/auth' 
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.SUPABASE_URL
@@ -14,8 +14,10 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    // 2. Utiliser la nouvelle méthode pour récupérer la session
+    const session = await auth()
         
+    // La propriété 'id' existe grâce au callback que nous avons configuré
     if (!session?.user?.id) {
       return NextResponse.json(
         { error: 'Authentication required' },
@@ -32,11 +34,12 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check if user has already voted for ANY project (not just this one)
+    // Le reste de votre logique est correct !
+    // Elle vérifie si un vote existe déjà pour cet utilisateur
     const { data: existingVote, error: checkError } = await supabase
       .from('votes')
       .select('id, project_id')
-      .eq('discord_id', session.user.id)
+      .eq('discord_id', session.user.id) // session.user.id contient bien l'ID Discord
       .single()
 
     if (checkError && checkError.code !== 'PGRST116') {
@@ -54,7 +57,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Insert new vote
+    // Insertion du nouveau vote
     const { data: vote, error: insertError } = await supabase
       .from('votes')
       .insert({
