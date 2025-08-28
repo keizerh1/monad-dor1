@@ -8,7 +8,7 @@ import { SupabaseAdapter } from "@auth/supabase-adapter"
 export const authOptions: NextAuthOptions = {
   adapter: SupabaseAdapter({
     url: process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    secret: process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    secret: process.env.SUPABASE_SERVICE_KEY!, // ← Changé ici
   }),
   providers: [
     Discord({
@@ -32,5 +32,4 @@ export const authOptions: NextAuthOptions = {
 const handler = NextAuth(authOptions)
 export { handler as GET, handler as POST }
 
-// Ajouter cette fonction pour la compatibilité
 export const auth = () => getServerSession(authOptions)
