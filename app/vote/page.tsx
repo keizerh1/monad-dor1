@@ -114,12 +114,18 @@ export default function VotePage() {
   return (
     <div className="max-w-7xl mx-auto">
       <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-6xl font-bold mb-4 text-gradient">
-          Vote for Your Favorite Monad NFT Collection
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-gradient">
+          Vote for Your Favorite Monad NFT Collection 🏆
         </h1>
-        <p className="text-xl text-gray-300 mb-8">
-          Choose the best NFT project in the Monad ecosystem
+        <p className="text-lg md:text-xl text-white mb-4 max-w-4xl mx-auto">
+          Celebrate the Monad ecosystem by supporting the projects you love
         </p>
+        <p className="text-lg md:text-xl text-white mb-8 max-w-4xl mx-auto">
+          One community, one vote, one vision
+        </p>
+        
+
+        
         <div className="bg-gray-900/50 backdrop-blur-sm p-4 rounded-xl border border-purple-500/20 inline-block">
           {hasVoted ? (
             <p className="text-monad-gold">
