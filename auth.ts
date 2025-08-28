@@ -1,10 +1,10 @@
 // auth.ts
 import NextAuth from "next-auth"
-import type { NextAuthConfig } from "next-auth"
+import type { NextAuthOptions } from "next-auth" // ← Changé ici
 import Discord from "next-auth/providers/discord"
 import { SupabaseAdapter } from "@auth/supabase-adapter"
 
-export const config: NextAuthConfig = {
+export const authOptions: NextAuthOptions = { // ← Changé ici
   // ⚠️ SupabaseAdapter avec URL + SERVICE ROLE KEY (server-only)
   adapter: SupabaseAdapter({
     url: process.env.NEXT_PUBLIC_SUPABASE_URL!,     // ex: https://xxxx.supabase.co
@@ -19,16 +19,17 @@ export const config: NextAuthConfig = {
   session: { strategy: "jwt" },
   callbacks: {
     async jwt({ token, account }) {
-      // expose l’ID provider (Discord) pour l’utiliser dans tes API
+      // expose l'ID provider (Discord) pour l'utiliser dans tes API
       if (account?.providerAccountId) token.userId = account.providerAccountId
       return token
     },
     async session({ session, token }) {
-      // injecte l’ID dans session.user.id
+      // injecte l'ID dans session.user.id
       (session.user as any).id = token.userId as string
       return session
     },
   },
 }
 
-export const { handlers, auth, signIn, signOut } = NextAuth(config)
+const handler = NextAuth(authOptions) // ← Changé ici
+export { handler as GET, handler as POST }
