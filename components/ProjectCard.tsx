@@ -34,7 +34,7 @@ export function ProjectCard({ project, hasVoted, onVote, disabled = false }: Pro
   const isButtonDisabled = hasVoted || isVoting || disabled || !onVote
 
   return (
-    <div className={`group bg-gray-900/50 backdrop-blur-sm rounded-2xl overflow-hidden border transition-all duration-300 ${
+    <div className={`group bg-gray-900/50 backdrop-blur-sm rounded-2xl overflow-hidden border transition-all duration-300 h-full flex flex-col justify-between ${
       hasVoted 
         ? 'border-monad-gold shadow-lg shadow-monad-gold/20' 
         : disabled 

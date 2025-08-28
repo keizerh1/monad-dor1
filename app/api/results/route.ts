@@ -11,43 +11,32 @@ if (!supabaseUrl || !supabaseKey) {
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 // Mock projects data - in a real app, this would come from the database
-const mockProjects = [
-  {
-    id: '1',
-    name: 'MonadMonkeys',
-    description: 'A collection of unique pixel art monkeys living on the Monad blockchain',
-    image: 'https://picsum.photos/400/400?random=1'
-  },
-  {
-    id: '2',
-    name: 'Purple Pandas',
-    description: 'Mystical pandas with purple energy, bringing luck to the Monad ecosystem',
-    image: 'https://picsum.photos/400/400?random=2'
-  },
-  {
-    id: '3',
-    name: 'Cosmic Cats',
-    description: 'Intergalactic felines exploring the vast Monad universe',
-    image: 'https://picsum.photos/400/400?random=3'
-  },
-  {
-    id: '4',
-    name: 'Digital Dragons',
-    description: 'Ancient dragons awakened in the digital realm of Monad',
-    image: 'https://picsum.photos/400/400?random=4'
-  },
-  {
-    id: '5',
-    name: 'Neon Knights',
-    description: 'Cyberpunk warriors defending the Monad metaverse',
-    image: 'https://picsum.photos/400/400?random=5'
-  },
-  {
-    id: '6',
-    name: 'Golden Griffins',
-    description: 'Legendary creatures soaring through Monad\'s golden age',
-    image: 'https://picsum.photos/400/400?random=6'
-  }
+const projects = [
+  { id: '1', name: "BlockNads", image: "/images/block-nads.jpg", description: "Minimalist dark-themed collectibles" },
+  { id: '2', name: "Breath of Estova", image: "/images/breath-of-estova.jpg", description: "Pixelated adventures in the Estova realm" },
+  { id: '3', name: "Chewy", image: "/images/chewy.png", description: "Mysterious dark entities on Monad" },
+  { id: '4', name: "Chog NFT", image: "/images/chog.jpg", description: "Cute collectible characters with kawaii energy" },
+  { id: '5', name: "Chogstar", image: "/images/chogstar.jpg", description: "Star-powered creatures exploring the cosmos" },
+  { id: '6', name: "Llamao", image: "/images/llamao.jpg", description: "Adorable llama-inspired digital pets" },
+  { id: '7', name: "Meowmads", image: "/images/meowwnads.jpg", description: "Magical cats with mystical powers" },
+  { id: '8', name: "Monad Nomads", image: "/images/monad-nomads-nft.jpg", description: "Wandering travelers across digital landscapes" },
+  { id: '9', name: "Monadverse", image: "/images/monad-verse.jpg", description: "Gateway to the infinite Monad multiverse" },
+  { id: '10', name: "Mondana Baddies", image: "/images/monadana-baddies.jpg", description: "Rebellious characters with attitude" },
+  { id: '11', name: "Monshape Club", image: "/images/monshape.jpg", description: "Geometric art meets blockchain innovation" },
+  { id: '12', name: "Overnads", image: "/images/overnads.jpg", description: "Winged beings soaring through Monad skies" },
+  { id: '13', name: "Pepenads", image: "/images/pepenads.jpg", description: "Classic meme culture meets modern NFTs" },
+  { id: '14', name: "Skrumpeys", image: "/images/skrumpeys.jpg", description: "Retro-style digital collectibles" },
+  { id: '15', name: "SLMND", image: "/images/slmnd.jpg", description: "Skeletal warriors from ancient times" },
+  { id: '16', name: "SpikyNads", image: "/images/spikynads.jpg", description: "Pixelated beings with sharp edges" },
+  { id: '17', name: "Stonad", image: "/images/stonad.jpg", description: "Stone-like creatures with ancient wisdom" },
+  { id: '18', name: "The 10k Squad", image: "/images/the-10k-squad.jpg", description: "Elite collection of 10,000 unique members" },
+  { id: '19', name: "The Daks", image: "/images/the-daks.jpg", description: "Duck-inspired characters with personality" },
+  { id: '20', name: "Wassie", image: "/images/wassie.jpg", description: "Mystical moon-powered entities" },
+  { id: '21', name: "Wonad", image: "/images/wonad.jpg", description: "Plant-based creatures growing on Monad" },
+  { id: '22', name: "La Mouch", image: "/images/la-mouch.jpg", description: "French-inspired digital art collection" },
+  { id: '23', name: "Monadians", image: "/images/monadians.jpg", description: "Native inhabitants of the Monad ecosystem" },
+  { id: '24', name: "Mongang", image: "/images/mongang.jpg", description: "Cyberpunk-style digital avatars" },
+  { id: '25', name: "Sealuminati", image: "/images/seal-uminati.jpg", description: "Honor-bound seal warriors" }
 ]
 
 export async function GET() {
@@ -77,7 +66,7 @@ export async function GET() {
     }
 
     // Combine project info with vote counts
-    const results = mockProjects
+    const results = projects
       .map(project => ({
         ...project,
         votes: voteCounts[project.id] || 0
