@@ -3,13 +3,14 @@ import NextAuth from "next-auth"
 import { getServerSession } from "next-auth"
 import type { NextAuthOptions } from "next-auth"
 import Discord from "next-auth/providers/discord"
-import { SupabaseAdapter } from "@auth/supabase-adapter"
+// import { SupabaseAdapter } from "@auth/supabase-adapter"
 
 export const authOptions: NextAuthOptions = {
-  adapter: SupabaseAdapter({
-    url: process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    secret: process.env.SUPABASE_SERVICE_KEY!, // ← Changé ici
-  }),
+  // Commenté temporairement pour tester
+  // adapter: SupabaseAdapter({
+  //   url: process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  //   secret: process.env.SUPABASE_SERVICE_KEY!,
+  // }),
   providers: [
     Discord({
       clientId: process.env.DISCORD_CLIENT_ID!,
