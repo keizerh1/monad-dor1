@@ -11,7 +11,7 @@ export default function Home() {
           Welcome to Monad d'Or!
         </h2>
         <p className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed">
-          A Ballon d'Or Monad edition, where everyone can vote for their favorite NFT project and celebrate the creativity of our ecosystem.
+          A Ballon d'Or Monad edition, where everyone can vote for their favorite NFT project and celebrate the creativity of our ecosystem
         </p>
       </div>
 
