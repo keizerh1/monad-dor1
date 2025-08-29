@@ -18,14 +18,20 @@ export default function ResultsPage() {
 
   const fetchResults = async () => {
     try {
+      console.log('🔍 Frontend: Fetching results from API...')
       const response = await fetch('/api/results')
       if (response.ok) {
         const data = await response.json()
+        console.log('📊 Frontend: Raw API response:', data)
+        console.log('🗳️ Frontend: Results array:', data.results)
+        console.log('📈 Frontend: Total votes:', data.totalVotes)
         setResults(data.results)
         setLastUpdate(new Date())
+      } else {
+        console.error('❌ Frontend: API response not ok:', response.status, response.statusText)
       }
     } catch (error) {
-      console.error('Error fetching results:', error)
+      console.error('💥 Frontend: Error fetching results:', error)
     } finally {
       setLoading(false)
     }

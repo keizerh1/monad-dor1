@@ -10,6 +10,7 @@ interface Project {
   name: string
   description: string
   image: string
+  votes?: number
 }
 
 const projects: Project[] = [
@@ -45,14 +46,42 @@ export default function VotePage() {
   const [hasVoted, setHasVoted] = useState(false)
   const [votedProjectId, setVotedProjectId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  const [projectsWithVotes, setProjectsWithVotes] = useState<Project[]>(projects)
+  const [totalVotes, setTotalVotes] = useState(0)
 
   useEffect(() => {
+    // Charger les résultats des votes
+    fetchVoteResults()
+    
+    // Si l'utilisateur est connecté, vérifier s'il a voté
     if (session?.user) {
       fetchUserVoteStatus()
     } else {
       setLoading(false)
     }
   }, [session])
+
+  // Rafraîchir les résultats toutes les 15 secondes
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchVoteResults()
+    }, 15000) // 15 secondes
+
+    return () => clearInterval(interval)
+  }, [])
+
+  const fetchVoteResults = async () => {
+    try {
+      const response = await fetch('/api/results')
+      if (response.ok) {
+        const data = await response.json()
+        setProjectsWithVotes(data.results)
+        setTotalVotes(data.totalVotes)
+      }
+    } catch (error) {
+      console.error('Error fetching results:', error)
+    }
+  }
 
   const fetchUserVoteStatus = async () => {
     try {
@@ -88,6 +117,9 @@ export default function VotePage() {
         setHasVoted(true)
         setVotedProjectId(projectId)
         alert('Vote recorded successfully!')
+        
+        // Rafraîchir les résultats immédiatement après le vote
+        fetchVoteResults()
       } else {
         const error = await response.json()
         alert(error.error || 'Failed to vote')
@@ -98,7 +130,6 @@ export default function VotePage() {
     }
   }
 
-  // PARTIE CORRIGÉE ICI
   if (status === 'unauthenticated') {
     return <LoginPrompt />
   }
@@ -124,14 +155,19 @@ export default function VotePage() {
           One community, one vote, one vision
         </p>
         
-
+        {/* Affichage du total des votes */}
+        <div className="mb-6">
+          <p className="text-monad-gold text-xl font-semibold">
+            Total Votes: {totalVotes}
+          </p>
+        </div>
         
         <div className="bg-gray-900/50 backdrop-blur-sm p-4 rounded-xl border border-purple-500/20 inline-block">
           {hasVoted ? (
             <p className="text-monad-gold">
               ✅ Thank you <span className="font-semibold">{session.user?.name}</span>! 
               You have already voted for <span className="font-semibold">
-                {projects.find(p => p.id === votedProjectId)?.name}
+                {projectsWithVotes.find(p => p.id === votedProjectId)?.name}
               </span>.
             </p>
           ) : (
@@ -144,13 +180,14 @@ export default function VotePage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 items-start">
-        {projects.map((project) => (
+        {projectsWithVotes.map((project) => (
           <ProjectCard
             key={project.id}
             project={project}
             hasVoted={project.id === votedProjectId}
             onVote={hasVoted ? undefined : handleVote}
             disabled={hasVoted && project.id !== votedProjectId}
+            votes={project.votes || 0}
           />
         ))}
       </div>

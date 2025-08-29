@@ -8,6 +8,7 @@ interface Project {
   name: string
   description: string
   image: string
+  votes?: number
 }
 
 interface ProjectCardProps {
@@ -15,9 +16,10 @@ interface ProjectCardProps {
   hasVoted: boolean
   onVote?: (projectId: string) => Promise<void>
   disabled?: boolean
+  votes?: number
 }
 
-export function ProjectCard({ project, hasVoted, onVote, disabled = false }: ProjectCardProps) {
+export function ProjectCard({ project, hasVoted, onVote, disabled = false, votes = 0 }: ProjectCardProps) {
   const [isVoting, setIsVoting] = useState(false)
 
   const handleVote = async () => {
@@ -67,6 +69,12 @@ export function ProjectCard({ project, hasVoted, onVote, disabled = false }: Pro
             Voting Closed
           </div>
         )}
+
+        {/* Compteur de votes en bas à gauche de l'image */}
+        <div className="absolute bottom-4 left-4 bg-black/80 backdrop-blur-sm text-white px-3 py-2 rounded-lg flex items-center space-x-2">
+          <span className="text-monad-gold font-bold text-lg">{votes}</span>
+          <span className="text-sm">{votes === 1 ? 'vote' : 'votes'}</span>
+        </div>
       </div>
 
       <div className="p-6">

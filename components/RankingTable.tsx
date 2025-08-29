@@ -15,6 +15,9 @@ interface RankingTableProps {
 }
 
 export function RankingTable({ results }: RankingTableProps) {
+  console.log('🏆 RankingTable: Received results:', results)
+  console.log('📊 RankingTable: Number of results:', results.length)
+  
   const getRankIcon = (position: number) => {
     switch (position) {
       case 1:

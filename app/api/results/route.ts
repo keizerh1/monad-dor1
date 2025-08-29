@@ -41,45 +41,53 @@ const projects = [
 
 export async function GET() {
   try {
-    // Get vote counts for each project
-    const { data: voteCounts, error } = await supabase
+    console.log('🔍 Starting results API call...')
+    
+    // Get all votes and count them manually since Supabase doesn't support COUNT(*) directly
+    const { data: votes, error } = await supabase
       .from('votes')
       .select('project_id')
-      .then(({ data, error }) => {
-        if (error) throw error
-        
-        // Count votes per project
-        const counts = (data || []).reduce((acc: Record<string, number>, vote) => {
-          acc[vote.project_id] = (acc[vote.project_id] || 0) + 1
-          return acc
-        }, {})
-        
-        return { data: counts, error: null }
-      })
-
+    
     if (error) {
-      console.error('Error fetching vote counts:', error)
+      console.error('❌ Error fetching votes:', error)
       return NextResponse.json(
-        { error: 'Failed to fetch results' },
+        { error: 'Failed to fetch votes' },
         { status: 500 }
       )
     }
+
+    console.log('📊 Raw database votes:', votes)
+    
+    // Count votes per project
+    const counts = (votes || []).reduce((acc: Record<string, number>, vote) => {
+      acc[vote.project_id] = (acc[vote.project_id] || 0) + 1
+      return acc
+    }, {})
+    
+    console.log('📊 Vote counts per project:', counts)
 
     // Combine project info with vote counts
     const results = projects
       .map(project => ({
         ...project,
-        votes: voteCounts[project.id] || 0
+        votes: counts[project.id] || 0
       }))
       .sort((a, b) => b.votes - a.votes) // Sort by vote count descending
 
-    return NextResponse.json({
+    console.log('🗳️ Mapped project data with vote counts:', results)
+    console.log('📈 Total votes:', Object.values(counts).reduce((sum: number, count: any) => sum + count, 0))
+
+    const response = {
       results,
-      totalVotes: Object.values(voteCounts).reduce((sum: number, count: any) => sum + count, 0)
-    })
+      totalVotes: Object.values(counts).reduce((sum: number, count: any) => sum + count, 0)
+    }
+
+    console.log('🚀 Final response data:', response)
+
+    return NextResponse.json(response)
 
   } catch (error) {
-    console.error('Results API error:', error)
+    console.error('💥 Results API error:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
