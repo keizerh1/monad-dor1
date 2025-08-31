@@ -101,7 +101,7 @@ export default function VotePage() {
 
   const handleVote = async (projectId: string) => {
     if (hasVoted) {
-      alert('You have already voted!')
+      // Pas de popup, l'interface montre déjà que l'utilisateur a voté
       return
     }
 
@@ -129,7 +129,8 @@ export default function VotePage() {
         // Update total votes count
         setTotalVotes(prev => prev + 1)
         
-        alert('Vote recorded successfully!')
+        // Pas de popup - l'interface se met à jour automatiquement
+        console.log('Vote recorded successfully for project:', projectId)
         
         // Fetch fresh data from server after a short delay to ensure consistency
         setTimeout(() => {
@@ -139,11 +140,10 @@ export default function VotePage() {
         
       } else {
         const error = await response.json()
-        alert(error.error || 'Failed to vote')
+        console.error('Failed to vote:', error.error || 'Failed to vote')
       }
     } catch (error) {
       console.error('Error voting:', error)
-      alert('Failed to vote')
     }
   }
 
