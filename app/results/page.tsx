@@ -54,28 +54,47 @@ export default function ResultsPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-6xl font-bold mb-4 text-gradient">
-  Monad d&apos;Or Results 🏆
-</h1>
-        <p className="text-xl text-gray-300 mb-4">
+    <div className="max-w-6xl mx-auto px-4 pb-8">
+      <div className="text-center mb-6">
+        <h1 className="text-4xl md:text-5xl font-bold mb-4 pt-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+          Monad d'Or Results
+        </h1>
+        <p className="text-base text-gray-300 mb-1 font-light">
           See which projects are leading the race!
         </p>
-        <p className="text-sm text-gray-400">
+        <p className="text-xs text-gray-500">
           Last updated: {lastUpdate.toLocaleTimeString()} • Updates every 10s
         </p>
       </div>
 
       {results.length > 0 && (
-        <div className="mb-8">
-          <div className="bg-gradient-to-r from-monad-gold to-monad-gold-dark p-1 rounded-2xl">
-            <div className="bg-black rounded-xl p-8 text-center">
-              <div className="text-6xl mb-4">👑</div>
-              <h2 className="text-3xl font-bold text-monad-gold mb-2">Current Leader</h2>
-              <h3 className="text-2xl font-semibold text-white mb-2">{results[0]?.name}</h3>
-              <p className="text-monad-gold font-bold text-xl">{results[0]?.votes} votes</p>
+        <div className="mb-6 relative">
+          {/* Left rocket - smaller */}
+          <div className="absolute -left-16 top-1/2 -translate-y-1/2 hidden lg:block animate-float">
+            <img 
+              src="/images/monad-moon.gif" 
+              alt="Monad Rocket" 
+              className="w-20 h-20 object-contain"
+            />
+          </div>
+          
+          {/* Current Leader card - more compact */}
+          <div className="bg-gradient-to-r from-[#FFD700] to-[#FFA500] p-0.5 rounded-xl max-w-2xl mx-auto">
+            <div className="bg-black rounded-xl p-5 text-center">
+              <div className="text-3xl mb-2">👑</div>
+              <h2 className="text-lg font-bold mb-2" style={{ color: '#FFD700' }}>Current Leader</h2>
+              <h3 className="text-xl font-semibold text-white mb-1">{results[0]?.name}</h3>
+              <p className="font-bold text-lg" style={{ color: '#FFD700' }}>{results[0]?.votes} votes</p>
             </div>
+          </div>
+          
+          {/* Right rocket - smaller */}
+          <div className="absolute -right-16 top-1/2 -translate-y-1/2 hidden lg:block animate-float" style={{animationDelay: '1s'}}>
+            <img 
+              src="/images/monad-moon.gif" 
+              alt="Monad Rocket" 
+              className="w-20 h-20 object-contain transform scale-x-[-1]"
+            />
           </div>
         </div>
       )}
@@ -83,13 +102,13 @@ export default function ResultsPage() {
       <RankingTable results={results} />
 
       {results.length === 0 && (
-        <div className="text-center py-16">
-          <div className="text-6xl mb-4">🗳️</div>
-          <h2 className="text-2xl font-semibold text-gray-300 mb-4">No votes yet!</h2>
-          <p className="text-gray-400 mb-8">Be the first to cast your vote and shape the rankings.</p>
+        <div className="text-center py-8">
+          <div className="text-3xl mb-3">🗳️</div>
+          <h2 className="text-base md:text-lg font-semibold text-gray-300 mb-3">No votes yet!</h2>
+          <p className="text-sm text-gray-400 mb-5">Be the first to cast your vote and shape the rankings.</p>
           <a
             href="/vote"
-            className="inline-block px-8 py-4 bg-gradient-to-r from-monad-purple to-monad-purple-dark text-white font-semibold rounded-xl transform transition-all duration-300 hover:scale-105 glow-purple"
+            className="inline-block px-5 py-2 bg-gradient-to-r from-monad-purple to-monad-purple-dark text-white font-semibold rounded-xl transform transition-all duration-300 hover:scale-105 glow-purple"
           >
             Start Voting
           </a>

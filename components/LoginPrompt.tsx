@@ -5,10 +5,10 @@ import { signIn } from 'next-auth/react'
 export function LoginPrompt() {
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
-      <div className="bg-gray-900/50 backdrop-blur-sm p-12 rounded-2xl border border-purple-500/20 max-w-md mx-auto">
+      <div className="bg-[#0d0021]/60 backdrop-blur-sm p-12 rounded-2xl border border-[#7B61FF]/30 max-w-md mx-auto shadow-lg">
         <div className="text-6xl mb-6">🔐</div>
         
-        <h2 className="text-3xl font-bold text-gradient mb-4">
+        <h2 className="text-3xl font-bold text-white mb-4">
           Login Required
         </h2>
         
@@ -42,7 +42,7 @@ export function LoginPrompt() {
         </p>
         <a
           href="/results"
-          className="inline-block px-6 py-3 bg-gradient-to-r from-monad-gold to-monad-gold-dark text-black font-semibold rounded-xl hover:transform hover:scale-105 transition-all duration-300 glow-gold"
+          className="inline-block px-6 py-3 bg-[#7B61FF] text-white font-semibold rounded-xl hover:transform hover:scale-105 transition-all duration-300 hover:bg-[#6B51EF]"
         >
           View Results
         </a>

@@ -50,7 +50,7 @@ export function RankingTable({ results }: RankingTableProps) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 px-4 max-w-full">
       {results.map((project, index) => {
         const position = index + 1
         const isTopThree = position <= 3
@@ -60,42 +60,45 @@ export function RankingTable({ results }: RankingTableProps) {
             key={project.id}
             className={`backdrop-blur-sm rounded-2xl border transition-all duration-300 hover:transform hover:scale-[1.02] ${getRankStyle(position)}`}
           >
-            <div className="p-6">
-              <div className="flex items-center space-x-6">
-                {/* Rank */}
-                <div className="flex-shrink-0">
-                  <div className={`text-3xl font-bold ${getTextColor(position)}`}>
-                    {getRankIcon(position)}
+            <div className="p-4 w-full">
+              <div className="flex items-center justify-between gap-4 w-full">
+                {/* Left side: Rank, Image, Project Info */}
+                <div className="flex items-center gap-3 flex-1 min-w-0">
+                  {/* Rank */}
+                  <div className="flex-shrink-0 w-12 text-center">
+                    <div className={`text-2xl font-bold ${getTextColor(position)}`}>
+                      {getRankIcon(position)}
+                    </div>
+                  </div>
+
+                  {/* Project Image */}
+                  <div className="flex-shrink-0">
+                    <Image
+                      src={project.image}
+                      alt={project.name}
+                      width={48}
+                      height={48}
+                      className="w-12 h-12 rounded-xl object-cover border-2 border-white/20"
+                    />
+                  </div>
+
+                  {/* Project Info */}
+                  <div className="min-w-0 flex-1">
+                    <h3 className={`font-bold text-base truncate ${getTextColor(position)}`}>
+                      {project.name}
+                    </h3>
+                    <p className={`text-xs opacity-80 truncate ${getTextColor(position)}`}>
+                      {project.description}
+                    </p>
                   </div>
                 </div>
 
-                {/* Project Image */}
-                <div className="flex-shrink-0">
-                  <Image
-                    src={project.image}
-                    alt={project.name}
-                    width={80}
-                    height={80}
-                    className="w-20 h-20 rounded-xl object-cover border-2 border-white/20"
-                  />
-                </div>
-
-                {/* Project Info */}
-                <div className="flex-grow min-w-0">
-                  <h3 className={`text-xl font-bold mb-2 ${getTextColor(position)}`}>
-                    {project.name}
-                  </h3>
-                  <p className={`text-sm opacity-80 line-clamp-2 ${getTextColor(position)}`}>
-                    {project.description}
-                  </p>
-                </div>
-
-                {/* Vote Count */}
-                <div className="flex-shrink-0 text-right">
-                  <div className={`text-3xl font-bold ${getTextColor(position)}`}>
+                {/* Right side: Vote Count */}
+                <div className="text-right flex-shrink-0 min-w-[60px]">
+                  <div className={`text-xl font-bold ${getTextColor(position)}`}>
                     {project.votes}
                   </div>
-                  <div className={`text-sm opacity-80 ${getTextColor(position)}`}>
+                  <div className={`text-xs opacity-80 ${getTextColor(position)}`}>
                     {project.votes === 1 ? 'vote' : 'votes'}
                   </div>
                 </div>
@@ -103,10 +106,10 @@ export function RankingTable({ results }: RankingTableProps) {
 
               {/* Progress Bar for Top Project */}
               {position === 1 && results[0]?.votes > 0 && (
-                <div className="mt-4 pt-4 border-t border-black/20">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-black font-semibold">Leading with {project.votes} votes</span>
-                    <span className="text-black text-sm">
+                <div className="mt-4 pt-4 border-t border-black/20 px-2">
+                  <div className="flex justify-between items-center mb-2 gap-4">
+                    <span className="text-black font-semibold text-sm truncate">Leading with {project.votes} votes</span>
+                    <span className="text-black text-xs flex-shrink-0">
                       {results[1] ? `+${project.votes - results[1].votes} ahead` : 'Uncontested leader'}
                     </span>
                   </div>
@@ -118,10 +121,10 @@ export function RankingTable({ results }: RankingTableProps) {
       })}
 
       {results.length > 3 && (
-        <div className="text-center py-8">
+        <div className="text-center py-6 px-4">
           <div className="inline-flex items-center space-x-2 text-gray-400">
-            <span className="text-2xl">🏆</span>
-            <span className="text-lg">
+            <span className="text-xl">🏆</span>
+            <span className="text-base">
               Showing all {results.length} projects
             </span>
           </div>

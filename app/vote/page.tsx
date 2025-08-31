@@ -145,33 +145,33 @@ export default function VotePage() {
   return (
     <div className="max-w-7xl mx-auto">
       <div className="text-center mb-12">
-        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-gradient">
-          Vote for Your Favorite Monad NFT Collection 🏆
+        <h1 className="text-2xl md:text-3xl font-bold mb-6 text-gradient">
+          Vote for Your Favorite Monad NFT Collection 
         </h1>
-        <p className="text-lg md:text-xl text-white mb-4 max-w-4xl mx-auto">
+        <p className="text-base text-white mb-4 max-w-4xl mx-auto">
           Celebrate the Monad ecosystem by supporting the projects you love
         </p>
-        <p className="text-lg md:text-xl text-white mb-8 max-w-4xl mx-auto">
+        <p className="text-base text-white mb-8 max-w-4xl mx-auto">
           One community, one vote, one vision
         </p>
         
         {/* Affichage du total des votes */}
         <div className="mb-6">
-          <p className="text-monad-gold text-xl font-semibold">
+          <p className="text-monad-gold text-base font-semibold">
             Total Votes: {totalVotes}
           </p>
         </div>
         
-        <div className="bg-gray-900/50 backdrop-blur-sm p-4 rounded-xl border border-purple-500/20 inline-block">
+        <div className="bg-gray-900/50 backdrop-blur-sm p-3 rounded-xl border border-purple-500/20 inline-block">
           {hasVoted ? (
-            <p className="text-monad-gold">
+            <p className="text-sm text-monad-gold">
               ✅ Thank you <span className="font-semibold">{session.user?.name}</span>! 
               You have already voted for <span className="font-semibold">
                 {projectsWithVotes.find(p => p.id === votedProjectId)?.name}
               </span>.
             </p>
           ) : (
-            <p className="text-monad-gold">
+            <p className="text-sm text-monad-gold">
               Welcome, <span className="font-semibold">{session.user?.name}</span>! 
               You can vote for <span className="font-semibold text-white">one project only</span>.
             </p>
@@ -179,7 +179,7 @@ export default function VotePage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 items-start">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
         {projectsWithVotes.map((project) => (
           <ProjectCard
             key={project.id}

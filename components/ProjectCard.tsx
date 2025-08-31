@@ -36,7 +36,7 @@ export function ProjectCard({ project, hasVoted, onVote, disabled = false, votes
   const isButtonDisabled = hasVoted || isVoting || disabled || !onVote
 
   return (
-    <div className={`group bg-gray-900/50 backdrop-blur-sm rounded-2xl overflow-hidden border transition-all duration-300 h-full flex flex-col justify-between ${
+    <div className={`group bg-gray-900/50 backdrop-blur-sm rounded-lg overflow-hidden border transition-all duration-300 h-full flex flex-col justify-between ${
       hasVoted 
         ? 'border-monad-gold shadow-lg shadow-monad-gold/20' 
         : disabled 
@@ -47,9 +47,9 @@ export function ProjectCard({ project, hasVoted, onVote, disabled = false, votes
         <Image
           src={project.image}
           alt={project.name}
-          width={400}
-          height={400}
-          className={`w-full h-64 object-cover transition-transform duration-300 ${
+          width={256}
+          height={200}
+          className={`w-full h-48 object-cover transition-transform duration-300 ${
             !disabled ? 'group-hover:scale-110' : ''
           }`}
         />
@@ -58,27 +58,27 @@ export function ProjectCard({ project, hasVoted, onVote, disabled = false, votes
         }`}></div>
         
         {hasVoted && (
-          <div className="absolute top-4 right-4 bg-monad-gold text-black px-3 py-1 rounded-full text-sm font-semibold flex items-center space-x-1">
+          <div className="absolute top-3 right-3 bg-monad-gold text-black px-3 py-1 rounded-full text-xs font-semibold flex items-center space-x-1">
             <span>✓</span>
             <span>Your Vote</span>
           </div>
         )}
 
         {disabled && !hasVoted && (
-          <div className="absolute top-4 right-4 bg-gray-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+          <div className="absolute top-3 right-3 bg-gray-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
             Voting Closed
           </div>
         )}
 
-        {/* Compteur de votes en bas à gauche de l'image */}
-        <div className="absolute bottom-4 left-4 bg-black/80 backdrop-blur-sm text-white px-3 py-2 rounded-lg flex items-center space-x-2">
-          <span className="text-monad-gold font-bold text-lg">{votes}</span>
-          <span className="text-sm">{votes === 1 ? 'vote' : 'votes'}</span>
+        {/* Vote count badge */}
+        <div className="absolute bottom-3 left-3 bg-black/80 backdrop-blur-sm text-white px-2 py-1 rounded-lg flex items-center space-x-1">
+          <span className="text-monad-gold font-bold text-sm">{votes}</span>
+          <span className="text-xs">{votes === 1 ? 'vote' : 'votes'}</span>
         </div>
       </div>
 
-      <div className="p-6">
-        <h3 className={`text-xl font-bold mb-3 transition-colors ${
+      <div className="p-3">
+        <h3 className={`font-semibold text-base mb-1 transition-colors ${
           hasVoted 
             ? 'text-monad-gold' 
             : disabled 
@@ -87,7 +87,7 @@ export function ProjectCard({ project, hasVoted, onVote, disabled = false, votes
         }`}>
           {project.name}
         </h3>
-        <p className={`text-sm mb-6 line-clamp-3 ${
+        <p className={`text-xs text-gray-400 mb-3 line-clamp-2 ${
           disabled ? 'text-gray-500' : 'text-gray-400'
         }`}>
           {project.description}
@@ -96,7 +96,7 @@ export function ProjectCard({ project, hasVoted, onVote, disabled = false, votes
         <button
           onClick={handleVote}
           disabled={isButtonDisabled}
-          className={`w-full py-3 px-6 rounded-xl font-semibold transition-all duration-300 ${
+          className={`w-full py-2 px-4 rounded-lg font-semibold transition-all duration-300 text-sm ${
             hasVoted
               ? 'bg-monad-gold text-black cursor-default'
               : isVoting
@@ -107,22 +107,22 @@ export function ProjectCard({ project, hasVoted, onVote, disabled = false, votes
           }`}
         >
           {isVoting ? (
-            <div className="flex items-center justify-center space-x-2">
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+            <div className="flex items-center justify-center space-x-1">
+              <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white"></div>
               <span>Voting...</span>
             </div>
           ) : hasVoted ? (
-            <div className="flex items-center justify-center space-x-2">
+            <div className="flex items-center justify-center space-x-1">
               <span>🏆</span>
               <span>Your Choice</span>
             </div>
           ) : disabled ? (
-            <div className="flex items-center justify-center space-x-2">
+            <div className="flex items-center justify-center space-x-1">
               <span>🚫</span>
               <span>Already Voted</span>
             </div>
           ) : (
-            <div className="flex items-center justify-center space-x-2">
+            <div className="flex items-center justify-center space-x-1">
               <span>🗳️</span>
               <span>Vote Now</span>
             </div>

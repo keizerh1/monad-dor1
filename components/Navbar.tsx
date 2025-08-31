@@ -10,28 +10,37 @@ export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
-    <nav className="bg-black/80 backdrop-blur-sm border-b border-purple-500/20">
+    <nav className="bg-[#0f0f23]/90 backdrop-blur-sm border-b border-[#9c8cfa]/30">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 group">
-            <span className="text-2xl">🏆</span>
-            <span className="text-xl font-bold text-gradient group-hover:scale-105 transition-transform">
-              Monad d&apos;Or
-            </span>
+            <div className="flex items-center gap-2">
+              <Image 
+                src="/images/logo-monad-violet.png"
+                alt="Monad Logo"
+                width={32}
+                height={32}
+                className="object-contain"
+                priority
+              />
+              <span className="text-lg font-semibold text-[#836EF9] group-hover:scale-105 transition-transform">
+                Monad d&apos;Or
+              </span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <Link 
               href="/vote" 
-              className="text-gray-300 hover:text-monad-purple transition-colors font-medium"
+              className="text-gray-300 hover:text-monad-purple transition-colors font-medium text-sm"
             >
               Vote
             </Link>
             <Link 
               href="/results" 
-              className="text-gray-300 hover:text-monad-gold transition-colors font-medium"
+              className="text-gray-300 hover:text-monad-gold transition-colors font-medium text-sm"
             >
               Results
             </Link>
@@ -94,14 +103,14 @@ export function Navbar() {
             <div className="flex flex-col space-y-4">
               <Link 
                 href="/vote" 
-                className="text-gray-300 hover:text-monad-purple transition-colors font-medium"
+                className="text-gray-300 hover:text-monad-purple transition-colors font-medium text-sm"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Vote
               </Link>
               <Link 
                 href="/results" 
-                className="text-gray-300 hover:text-monad-gold transition-colors font-medium"
+                className="text-gray-300 hover:text-monad-gold transition-colors font-medium text-sm"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Results
