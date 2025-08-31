@@ -88,6 +88,7 @@ export default function VotePage() {
       const response = await fetch('/api/vote/status')
       if (response.ok) {
         const data = await response.json()
+        console.log('User vote status:', data) // Debug log
         setHasVoted(data.hasVoted)
         setVotedProjectId(data.votedProjectId)
       }
@@ -114,12 +115,28 @@ export default function VotePage() {
       })
 
       if (response.ok) {
+        // Update local state immediately for instant feedback
         setHasVoted(true)
         setVotedProjectId(projectId)
+        
+        // Update the vote count locally for the voted project
+        setProjectsWithVotes(prev => prev.map(p => 
+          p.id === projectId 
+            ? { ...p, votes: (p.votes || 0) + 1 }
+            : p
+        ))
+        
+        // Update total votes count
+        setTotalVotes(prev => prev + 1)
+        
         alert('Vote recorded successfully!')
         
-        // Rafraîchir les résultats immédiatement après le vote
-        fetchVoteResults()
+        // Fetch fresh data from server after a short delay to ensure consistency
+        setTimeout(() => {
+          fetchVoteResults()
+          fetchUserVoteStatus()
+        }, 500)
+        
       } else {
         const error = await response.json()
         alert(error.error || 'Failed to vote')
