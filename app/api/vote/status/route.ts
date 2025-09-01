@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { auth } from "@/auth" // 👈 récupère la session avec v5
+import { auth } from "@/auth"
 import { createClient } from "@supabase/supabase-js"
 
 const supabaseUrl = process.env.SUPABASE_URL
@@ -13,11 +13,18 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 
 export async function GET() {
   try {
-    const session = await auth() // 👈 NextAuth v5
+    const session = await auth()
+    
     if (!session?.user?.id) {
       return NextResponse.json({
         hasVoted: false,
         votedProjectId: null,
+      }, {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        }
       })
     }
 
@@ -33,18 +40,36 @@ export async function GET() {
       return NextResponse.json({
         hasVoted: false,
         votedProjectId: null,
+      }, {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        }
       })
     }
 
     return NextResponse.json({
       hasVoted: !!existingVote,
       votedProjectId: existingVote?.project_id || null,
+    }, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      }
     })
   } catch (error) {
     console.error("Vote status API error:", error)
     return NextResponse.json({
       hasVoted: false,
       votedProjectId: null,
+    }, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      }
     })
   }
 }

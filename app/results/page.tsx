@@ -19,7 +19,13 @@ export default function ResultsPage() {
   const fetchResults = async () => {
     try {
       console.log('🔍 Frontend: Fetching results from API...')
-      const response = await fetch('/api/results')
+      // Add timestamp to prevent caching
+      const response = await fetch(`/api/results?t=${Date.now()}`, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+        }
+      })
       if (response.ok) {
         const data = await response.json()
         console.log('📊 Frontend: Raw API response:', data)

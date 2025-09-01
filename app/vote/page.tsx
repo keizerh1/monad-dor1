@@ -49,6 +49,9 @@ export default function VotePage() {
   const [projectsWithVotes, setProjectsWithVotes] = useState<Project[]>(projects)
   const [totalVotes, setTotalVotes] = useState(0)
 
+  const [showConfirmModal, setShowConfirmModal] = useState(false)
+  const [pendingVoteProjectId, setPendingVoteProjectId] = useState<string | null>(null)
+
   useEffect(() => {
     // Charger les résultats des votes
     fetchVoteResults()
@@ -72,7 +75,13 @@ export default function VotePage() {
 
   const fetchVoteResults = async () => {
     try {
-      const response = await fetch('/api/results')
+      // Add timestamp to prevent caching
+      const response = await fetch(`/api/results?t=${Date.now()}`, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+        }
+      })
       if (response.ok) {
         const data = await response.json()
         setProjectsWithVotes(data.results)
@@ -85,7 +94,13 @@ export default function VotePage() {
 
   const fetchUserVoteStatus = async () => {
     try {
-      const response = await fetch('/api/vote/status')
+      // Add timestamp and no-cache headers
+      const response = await fetch(`/api/vote/status?t=${Date.now()}`, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+        }
+      })
       if (response.ok) {
         const data = await response.json()
         console.log('User vote status:', data) // Debug log
@@ -105,23 +120,31 @@ export default function VotePage() {
       return
     }
 
+    // Stocker le projet et afficher la modal de confirmation
+    setPendingVoteProjectId(projectId)
+    setShowConfirmModal(true)
+  }
+
+  const confirmVote = async () => {
+    if (!pendingVoteProjectId) return
+
     try {
       const response = await fetch('/api/vote', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ projectId }),
+        body: JSON.stringify({ projectId: pendingVoteProjectId }),
       })
 
       if (response.ok) {
         // Update local state immediately for instant feedback
         setHasVoted(true)
-        setVotedProjectId(projectId)
+        setVotedProjectId(pendingVoteProjectId)
         
         // Update the vote count locally for the voted project
         setProjectsWithVotes(prev => prev.map(p => 
-          p.id === projectId 
+          p.id === pendingVoteProjectId 
             ? { ...p, votes: (p.votes || 0) + 1 }
             : p
         ))
@@ -129,8 +152,11 @@ export default function VotePage() {
         // Update total votes count
         setTotalVotes(prev => prev + 1)
         
-        // Pas de popup - l'interface se met à jour automatiquement
-        console.log('Vote recorded successfully for project:', projectId)
+        // Fermer la modal
+        setShowConfirmModal(false)
+        setPendingVoteProjectId(null)
+        
+        console.log('Vote recorded successfully for project:', pendingVoteProjectId)
         
         // Fetch fresh data from server after a short delay to ensure consistency
         setTimeout(() => {
@@ -141,10 +167,19 @@ export default function VotePage() {
       } else {
         const error = await response.json()
         console.error('Failed to vote:', error.error || 'Failed to vote')
+        setShowConfirmModal(false)
+        setPendingVoteProjectId(null)
       }
     } catch (error) {
       console.error('Error voting:', error)
+      setShowConfirmModal(false)
+      setPendingVoteProjectId(null)
     }
+  }
+
+  const cancelVote = () => {
+    setShowConfirmModal(false)
+    setPendingVoteProjectId(null)
   }
 
   if (status === 'unauthenticated') {
@@ -208,6 +243,51 @@ export default function VotePage() {
           />
         ))}
       </div>
+
+      {/* Modal de confirmation */}
+      {showConfirmModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+          <div className="bg-gradient-to-b from-gray-900 to-black border border-purple-500/30 rounded-xl p-6 max-w-md mx-4">
+            <div className="text-center">
+              <div className="text-4xl mb-4">⚠️</div>
+              <h3 className="text-xl font-bold text-white mb-3">Confirmer votre vote</h3>
+              
+              <p className="text-gray-300 mb-2">
+                Vous êtes sur le point de voter pour :
+              </p>
+              
+              <p className="text-[#FFD700] font-bold text-lg mb-4">
+                {projectsWithVotes.find(p => p.id === pendingVoteProjectId)?.name}
+              </p>
+              
+              <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-3 mb-6">
+                <p className="text-red-400 text-sm font-semibold">
+                  ⚠️ Attention : Vous ne pourrez pas changer votre vote pendant toute la Saison 1
+                </p>
+              </div>
+              
+              <p className="text-gray-400 text-sm mb-6">
+                Êtes-vous sûr de vouloir faire ce choix ?
+              </p>
+              
+              <div className="flex gap-3 justify-center">
+                <button
+                  onClick={confirmVote}
+                  className="px-6 py-2.5 bg-[#7B61FF] hover:bg-[#6B51EF] text-white font-semibold rounded-lg transition-all transform hover:scale-105"
+                >
+                  Confirmer mon vote
+                </button>
+                <button
+                  onClick={cancelVote}
+                  className="px-6 py-2.5 bg-gray-700 hover:bg-gray-600 text-white font-semibold rounded-lg transition-all"
+                >
+                  Annuler
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

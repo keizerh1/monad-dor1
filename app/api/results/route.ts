@@ -52,7 +52,14 @@ export async function GET() {
       console.error('❌ Error fetching votes:', error)
       return NextResponse.json(
         { error: 'Failed to fetch votes' },
-        { status: 500 }
+        { 
+          status: 500,
+          headers: {
+            'Cache-Control': 'no-store, no-cache, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0',
+          }
+        }
       )
     }
 
@@ -84,13 +91,26 @@ export async function GET() {
 
     console.log('🚀 Final response data:', response)
 
-    return NextResponse.json(response)
+    return NextResponse.json(response, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      }
+    })
 
   } catch (error) {
     console.error('💥 Results API error:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
-      { status: 500 }
+      { 
+        status: 500,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        }
+      }
     )
   }
 }

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-// 1. Importer la fonction 'auth' depuis votre fichier auth.ts
-import { auth } from '@/auth' 
+import { auth } from '@/auth'
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.SUPABASE_URL
@@ -14,10 +13,8 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 
 export async function POST(request: NextRequest) {
   try {
-    // 2. Utiliser la nouvelle méthode pour récupérer la session
     const session = await auth()
-        
-    // La propriété 'id' existe grâce au callback que nous avons configuré
+    
     if (!session?.user?.id) {
       return NextResponse.json(
         { error: 'Authentication required' },
@@ -34,12 +31,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Le reste de votre logique est correct !
-    // Elle vérifie si un vote existe déjà pour cet utilisateur
+    // Vérifie si un vote existe déjà pour cet utilisateur
     const { data: existingVote, error: checkError } = await supabase
       .from('votes')
       .select('id, project_id')
-      .eq('discord_id', session.user.id) // session.user.id contient bien l'ID Discord
+      .eq('discord_id', session.user.id)
       .single()
 
     if (checkError && checkError.code !== 'PGRST116') {
@@ -76,9 +72,16 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Retourne avec headers no-cache
     return NextResponse.json({
       success: true,
       vote
+    }, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      }
     })
   } catch (error) {
     console.error('Vote API error:', error)
