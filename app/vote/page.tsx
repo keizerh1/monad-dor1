@@ -94,8 +94,8 @@ export default function VotePage() {
 
   const fetchUserVoteStatus = async () => {
     try {
-      // Add timestamp and no-cache headers
-      const response = await fetch(`/api/vote/status?t=${Date.now()}`, {
+      // Add timestamp and no-cache headers - CORRECTED URL HERE
+      const response = await fetch(`/api/vote-status?t=${Date.now()}`, {
         cache: 'no-store',
         headers: {
           'Cache-Control': 'no-cache',
@@ -244,16 +244,16 @@ export default function VotePage() {
         ))}
       </div>
 
-      {/* Modal de confirmation */}
+      {/* Confirmation Modal */}
       {showConfirmModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
           <div className="bg-gradient-to-b from-gray-900 to-black border border-purple-500/30 rounded-xl p-6 max-w-md mx-4">
             <div className="text-center">
               <div className="text-4xl mb-4">⚠️</div>
-              <h3 className="text-xl font-bold text-white mb-3">Confirmer votre vote</h3>
+              <h3 className="text-xl font-bold text-white mb-3">Confirm Your Vote</h3>
               
               <p className="text-gray-300 mb-2">
-                Vous êtes sur le point de voter pour :
+                You are about to vote for:
               </p>
               
               <p className="text-[#FFD700] font-bold text-lg mb-4">
@@ -262,12 +262,12 @@ export default function VotePage() {
               
               <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-3 mb-6">
                 <p className="text-red-400 text-sm font-semibold">
-                  ⚠️ Attention : Vous ne pourrez pas changer votre vote pendant toute la Saison 1
+                  ⚠️ Warning: You cannot change your vote during the entire Season 1
                 </p>
               </div>
               
               <p className="text-gray-400 text-sm mb-6">
-                Êtes-vous sûr de vouloir faire ce choix ?
+                Are you sure you want to make this choice?
               </p>
               
               <div className="flex gap-3 justify-center">
@@ -275,13 +275,13 @@ export default function VotePage() {
                   onClick={confirmVote}
                   className="px-6 py-2.5 bg-[#7B61FF] hover:bg-[#6B51EF] text-white font-semibold rounded-lg transition-all transform hover:scale-105"
                 >
-                  Confirmer mon vote
+                  Confirm my vote
                 </button>
                 <button
                   onClick={cancelVote}
                   className="px-6 py-2.5 bg-gray-700 hover:bg-gray-600 text-white font-semibold rounded-lg transition-all"
                 >
-                  Annuler
+                  Cancel
                 </button>
               </div>
             </div>
