@@ -95,7 +95,7 @@ export default function VotePage() {
   const fetchUserVoteStatus = async () => {
     try {
       // Add timestamp and no-cache headers - CORRECTED URL HERE
-      const response = await fetch(`/api/vote-status?t=${Date.now()}`, {
+      const response = await fetch(`/api/vote/status?t=${Date.now()}`, {
         cache: 'no-store',
         headers: {
           'Cache-Control': 'no-cache',
@@ -236,7 +236,7 @@ export default function VotePage() {
           <ProjectCard
             key={project.id}
             project={project}
-            hasVoted={project.id === votedProjectId}
+            hasVoted={hasVoted && project.id === votedProjectId}
             onVote={hasVoted ? undefined : handleVote}
             disabled={hasVoted && project.id !== votedProjectId}
             votes={project.votes || 0}
