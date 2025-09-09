@@ -16,7 +16,7 @@ interface Project {
 const projects: Project[] = [
   { id: '1', name: "BlockNads", image: "/images/block-nads.jpg", description: "Minimalist dark-themed collectibles" },
   { id: '2', name: "Breath of Estova", image: "/images/breath-of-estova.jpg", description: "Pixelated adventures in the Estova realm" },
-  { id: '3', name: "Chewy", image: "/images/chewy.png", description: "Mysterious dark entities on Monad" },
+  { id: '3', name: "Chewy", image: "/images/chewy.png", description: "Futuristic mecha warriors forged on Monad" },
   { id: '4', name: "Chog NFT", image: "/images/chog.jpg", description: "Cute collectible characters with kawaii energy" },
   { id: '5', name: "Chogstar", image: "/images/chogstar.jpg", description: "Star-powered creatures exploring the cosmos" },
   { id: '6', name: "Llamao", image: "/images/llamao.jpg", description: "Adorable llama-inspired digital pets" },
@@ -38,7 +38,14 @@ const projects: Project[] = [
   { id: '22', name: "La Mouch", image: "/images/la-mouch.jpg", description: "French-inspired digital art collection" },
   { id: '23', name: "Monadians", image: "/images/monadians.jpg", description: "Native inhabitants of the Monad ecosystem" },
   { id: '24', name: "Mongang", image: "/images/mongang.jpg", description: "Cyberpunk-style digital avatars" },
-  { id: '25', name: "Sealuminati", image: "/images/seal-uminati.jpg", description: "Honor-bound seal warriors" }
+  { id: '25', name: "Sealuminati", image: "/images/seal-uminati.jpg", description: "Honor-bound seal warriors" },
+  { id: '26', name: "Buns", image: "/images/buns.png", description: "Colorful and quirky bunnies hopping through the Monad universe" },
+  { id: '27', name: "Beholdak", image: "/images/beholdak.jpg", description: "Mythical Monanimal on Monad" },
+  { id: '28', name: "Gmonad", image: "/images/gmonad.jpg", description: "A playful mascot full of Monad energy" },
+  { id: '29', name: "Bobr", image: "/images/bobr.jpg", description: "Beavers in all their forms" },
+  { id: '30', name: "NadRoots", image: "/images/nadroots.jpg", description: "Rootified characters for reforestation" },
+  { id: '31', name: "Clay Molandaks", image: "/images/claymolandaks.jpg", description: "A 100% AI generated collection mixing clay aesthetics with digital art" },
+  { id: '32', name: "Hell of Steve", image: "/images/hellofsteve.jpg", description: "The magnificent and diverse world of Steve" },
 ]
 
 export default function VotePage() {
